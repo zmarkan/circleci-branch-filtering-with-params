@@ -50,4 +50,8 @@ workflows:
           requires:
             - a_build
           branch_name: << pipeline.git.branch >>
-          
+        filters:
+          branches:
+            only:
+              - main
+              - test          
