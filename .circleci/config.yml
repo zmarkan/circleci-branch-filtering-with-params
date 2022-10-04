@@ -26,11 +26,7 @@ jobs:
       - checkout
       - run: "echo running job A"
 
-  b_deploy:
-    parameters:
-      branch_name:
-        type: string
-        
+  b_deploy:   
     docker: 
       - image: cimg/base:stable
     resource_class: small
@@ -49,7 +45,6 @@ workflows:
       - b_deploy:
           requires:
             - a_build
-          branch_name: << pipeline.git.branch >>
         filters:
           branches:
             only:
