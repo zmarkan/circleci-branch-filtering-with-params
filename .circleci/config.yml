@@ -1,5 +1,22 @@
 version: 2.1
 
+commands:
+
+  # Verify we're on one of the "allowed branches" and terminate job in case we aren't
+  # Allowed branches are main and test in this scenario
+  check_deployment_branch: 
+    steps:
+      - run:
+          name: Assert the current branch is correct
+          command: |
+            branch=<< pipeline.git.branch >>
+            if [ "$branch" != "main" ] &&  [ "$branch" != "test" ]; then
+                echo "Branch is not either main or test - will fail"
+                (exit -1)
+            else
+              echo "Branch is either main or test - can continue"
+            fi
+            
 jobs:
   a_build:
     docker: 
@@ -19,6 +36,7 @@ jobs:
     resource_class: small
     steps:
       - checkout
+      - check_deployment_branch
       - run:
           name: echo with arg
           command: |
