@@ -12,10 +12,8 @@ jobs:
   b_deploy:
     parameters:
       branch_name:
-        type: enum
-        enum: 
-          - main
-          - test
+        type: string
+        
     docker: 
       - image: cimg/base:stable
     resource_class: small
