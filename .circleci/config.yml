@@ -24,7 +24,7 @@ jobs:
       - run:
           name: echo with arg
           command: |
-            echo "hello from branch: "<< parameters.branch_name >>"
+            echo "hello from branch: << parameters.branch_name >>"
 
 workflows:
   workflow:
