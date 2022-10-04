@@ -1,0 +1,41 @@
+version: 2.1
+
+jobs:
+  a_build:
+    docker: 
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run: "echo running job A"
+
+  b_deploy:
+    parameters:
+      branch_name:
+        type: enum
+        enum: 
+          - main
+          - test
+    docker: 
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: echo with arg
+          command: |
+            echo "<< parameters.branch_name >>"
+
+workflows:
+  workflow:
+    jobs:
+      - a_build
+      - b_deploy:
+          requires:
+            - a_build
+          branch_name: << pipeline.git.branch >>
+          filters:
+            branches:
+              only:
+                - main
+                - test
